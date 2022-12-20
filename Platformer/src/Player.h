@@ -21,7 +21,8 @@ private:
 	const int windowheight = 768 - 23 - 2;
 
 public:
-	Player(double xPosition, double yPosition, double xVelocity, double yVelocity, double xBaseSpeed, double yBaseSpeed, Shape* shape, Map* map);
+	Player(double xPosition, double yPosition, double xVelocity, double yVelocity, double xBaseSpeed,
+		double yBaseSpeed, Shape* shape, Map* map);
 
 	double getXPosition();
 	double getYPosition();

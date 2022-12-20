@@ -14,7 +14,7 @@ public:
 	void virtual setArea() = 0;
 };
 
-class Point : private Shape {
+class Point : public Shape {
 private:
 	int x;
 	int y;
