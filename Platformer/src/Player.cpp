@@ -1,10 +1,13 @@
 #include "Player.h"
 
-
-Player::Player(double xPosition, double yPosition, double xVelocity, double yVelocity, Shape* shape, Map* map) : 
-	xPosition(xPosition), yPosition(yPosition), xVelocity(xVelocity), yVelocity(yVelocity), shape(shape), map(map) {
+// Constructor
+Player::Player(double xPosition, double yPosition, double xVelocity, double yVelocity, double xBaseSpeed,
+	double yBaseSpeed, Shape* shape, Map* map) :
+	xPosition(xPosition), yPosition(yPosition), xVelocity(xVelocity), yVelocity(yVelocity), xBaseSpeed(xBaseSpeed),
+	yBaseSpeed(yBaseSpeed), shape(shape), map(map) {
 }
 
+// getters
 double Player::getXPosition() {
 	return xPosition;
 }
@@ -12,7 +15,6 @@ double Player::getXPosition() {
 double Player::getYPosition() {
 	return yPosition;
 }
-
 
 double Player::getXVelocity() {
 	return xVelocity;
@@ -22,7 +24,7 @@ double Player::getYVelocity() {
 	return yVelocity;
 }
 
-
+// setters
 void Player::setXPosition(double newXPosition) {
 	xPosition = newXPosition;
 }
@@ -41,64 +43,106 @@ void Player::setYVelocity(double newYVelocity) {
 
 
 
-
+// draws the player model
 void Player::drawPlayer() {
 	shape->draw();
 }
 
+// updates the player
 void Player::updatePlayer() {
 
-	xPosition += xVelocity;
-	yPosition += yVelocity;
+	std::pair<double, double> currentPosition = { xPosition, yPosition };
 
-	if (yPosition != height) {
+	// checks if the player is touching a boundary
+	if (touchingLeft(currentPosition)) {
+		yPosition += yVelocity;
+		yVelocity += gravity;
+		stopHorizontal();
+	}
+	else if (touchingRight(currentPosition)) {
+		yPosition += yVelocity;
+		yVelocity += gravity;
+		stopHorizontal();
+	}
+	else if(touchingTop(currentPosition)) {
+		xPosition += xVelocity;
+		stopVertical();
+	}
+	else if (touchingBottom(currentPosition)) {
+		xPosition += xVelocity;
+		stopVertical();
+	}
+	else {
+		xPosition += xVelocity;
+		yPosition += yVelocity;
 		yVelocity += gravity;
 	}
 
+	// checks if the player is touching the outer boundaries
 	if (xPosition > windowwidth - width) {
 		xPosition = windowwidth - width;
 	}
 	if (xPosition < 0) {
 		xPosition = 0;
 	}
-	if (yPosition > windowheight) {
-		yPosition = windowheight;
+	if (yPosition > windowheight - 1) {
+		yPosition = windowheight - 1;
+		stopVertical();
 	}
 	if (yPosition < 0) {
 		yPosition = 0;
+		stopVertical();
 	}
 
-	if (hittingBarrier()) {
-		if (map->insideBarrier(xPosition - xVelocity, yPosition - yVelocity)) {
-			xPosition -= xVelocity;
-			yPosition -= yVelocity;
-		}
-		else if (map->insideBarrier(xPosition - xVelocity, yPosition)) {
-			xPosition -= xVelocity;
-		}
-		else if (map->insideBarrier(xPosition, yPosition - yVelocity)) {
-			yPosition -= yVelocity;
-		}
-	}
 	updateShape();
 }
 
+bool Player::touchingLeft(std::pair<double, double> currentPosition) {
+	return map->insideBarrier(xPosition + xVelocity, yPosition) || 
+		map->insideBarrier(xPosition + xVelocity, yPosition + height);
+}
+
+bool Player::touchingRight(std::pair<double, double> currentPosition) {
+	return map->insideBarrier(xPosition + xVelocity + width, yPosition) ||
+		map->insideBarrier(xPosition + xVelocity + width, yPosition + height);
+}
+
+bool Player::touchingTop(std::pair<double, double> currentPosition) {
+	return map->insideBarrier(xPosition, yPosition + yVelocity + height) ||
+		map->insideBarrier(xPosition + width, yPosition + yVelocity + height);
+}
+
+bool Player::touchingBottom(std::pair<double, double> currentPosition) {
+	return map->insideBarrier(xPosition, yPosition + yVelocity) ||
+		map->insideBarrier(xPosition + width, yPosition + yVelocity);
+}
 
 void Player::updateShape() {
 	delete shape;
 	shape = new Rectangle(xPosition, yPosition, 0, width, height, 127, 0, 0);
 }
 
-void Player::movePlayer(double newXVelocity, double newYVelocity) {
-	xVelocity = newXVelocity;
-	if (yPosition == 0 || map->insideBarrier(xPosition, yPosition - 1)) {
-		yVelocity = newYVelocity;
+
+void Player::moveHorizontal(bool direction) {
+	if (direction) {
+		xVelocity = xBaseSpeed;
+	}
+	else {
+		xVelocity = -xBaseSpeed;
 	}
 }
 
-bool Player::hittingBarrier() {
-	return map->insideBarrier(xPosition, yPosition) ||
-		map->insideBarrier(xPosition + width, yPosition) ||
-		map->insideBarrier(xPosition, yPosition + height) ||
-		map->insideBarrier(xPosition + width, yPosition + height);
+void Player::moveVertical() {
+	if (yPosition == 0 || map->insideBarrier(xPosition, yPosition - 1) ||
+		map->insideBarrier(xPosition + width, yPosition - 1)) {
+		yVelocity = yBaseSpeed;
+	}
+}
+
+void Player::stopHorizontal() {
+	xVelocity = 0;
+}
+
+void Player::stopVertical() {
+	yVelocity = 0;
 }

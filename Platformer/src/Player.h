@@ -9,6 +9,8 @@ private:
 	double yVelocity;
 	double xVelocity;
 
+	double xBaseSpeed;
+	double yBaseSpeed;
 	Shape* shape;
 	Map* map;
 
@@ -19,7 +21,7 @@ private:
 	const int windowheight = 768 - 23 - 2;
 
 public:
-	Player(double xPosition, double yPosition, double xVelocity, double yVelocity, Shape* shape, Map* map);
+	Player(double xPosition, double yPosition, double xVelocity, double yVelocity, double xBaseSpeed, double yBaseSpeed, Shape* shape, Map* map);
 
 	double getXPosition();
 	double getYPosition();
@@ -35,7 +37,16 @@ public:
 	void drawPlayer();
 	void updatePlayer();
 	void updateShape();
-	void movePlayer(double newXVelocity, double newYVelocity);
+	void moveHorizontal(bool direction);
+	void moveVertical();
+	void stopHorizontal();
+	void stopVertical();
 	bool hittingBarrier();
+
+private:
+	bool touchingLeft(std::pair<double, double> currentPosition);
+	bool touchingRight(std::pair<double, double> currentPosition);
+	bool touchingTop(std::pair<double, double> currentPosition);
+	bool touchingBottom(std::pair<double, double> currentPosition);
 };
 

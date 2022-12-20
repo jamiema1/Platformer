@@ -13,19 +13,23 @@ double xPos{}, yPos{};
 Player* p;
 Map* m;
 
-double xVel = 0.35;
-double yVel = 0.6;
 
 int main()
 {
 
     m = new Map(windowwidth, windowheight);
 
-    p = new Player(100, 100, 0, 0, new Rectangle(0,0,0,0,0,127,0,0), m);
+    double xVel = 0.35;
+    double yVel = 0.6;
+    p = new Player(100, 100, 0, 0, xVel, yVel, new Rectangle(0,0,0,0,0,127,0,0), m);
 
-    m->addShape(new Rectangle(300, 0, 0, 100, 50, 0, 0, 127));
-    //m->addShape(new Rectangle(0, 0, 0, 100, 50, 0, 0, 127));
-    //m->addShape(new Rectangle(150, 100, 0, 100, 50, 0, 0, 127));
+    m->addShape(new Rectangle(100, 0, 0, 500, 100, 0, 0, 127));
+    m->addShape(new Rectangle(200, 100, 0,400, 100, 0, 0, 127));
+    m->addShape(new Rectangle(300, 200, 0, 300, 100, 0, 0, 127));
+    m->addShape(new Rectangle(400, 300, 0, 200, 100, 0, 0, 127));
+    m->addShape(new Rectangle(500, 400, 0, 100, 100, 0, 0, 127));
+    m->addShape(new Rectangle(600, 500, 0, 100, 100, 0, 0, 127));
+    m->addShape(new Rectangle(700, 600, 0, 100, 100, 0, 0, 127));
     GLFWwindow* window;
 
  
@@ -101,18 +105,18 @@ void KeyCallback(GLFWwindow* window, int key, int scancode, int action, int mods
 			glfwSetWindowShouldClose(window, 1);
 			break;
         case GLFW_KEY_A:
-            p->movePlayer(-xVel, p->getYVelocity());
+            p->moveHorizontal(false);
             break;
         case GLFW_KEY_D:
-            p->movePlayer(xVel, p->getYVelocity());
+            p->moveHorizontal(true);
             break;
         case GLFW_KEY_W:
-            p->movePlayer(p->getXVelocity(), yVel);
+            p->moveVertical();
             break;
 		}
     }
     if (action == GLFW_RELEASE && (key == GLFW_KEY_A || key == GLFW_KEY_D)) {
-        p->movePlayer(0, p->getYVelocity());
+        p->stopHorizontal();
     }
 }
 
@@ -135,7 +139,7 @@ void cursorEnterCallback(GLFWwindow* window, int entered) {
 void cursorPositonCallback(GLFWwindow* window, double xPos, double yPos) {
     static_cast<int>(xPos);
     static_cast<int>(yPos);
-    std::cout << xPos << ":" << yPos << "\n";
+    //std::cout << xPos << ":" << yPos << "\n";
 }
 
 void mouseButtonCallback(GLFWwindow* window, int button, int action, int mods) {
