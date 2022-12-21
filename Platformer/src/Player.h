@@ -14,12 +14,12 @@ private:
 	Shape* shape;
 	Map* map;
 
-	const double width = 50;
-	const double height = 50;
+	const double width = 40;
+	const double height = 40;
 	const double gravity = -0.001;
 	const int windowwidth = 1365;
 	const int windowheight = 768 - 23;
-
+	const int frequency = 1;
 public:
 	Player(double xPosition, double yPosition, double xVelocity, double yVelocity, double xBaseSpeed,
 		double yBaseSpeed, Shape* shape, Map* map);
@@ -45,9 +45,9 @@ public:
 	bool hittingBarrier();
 
 private:
-	bool touchingLeft(std::pair<double, double> currentPosition);
-	bool touchingRight(std::pair<double, double> currentPosition);
-	bool touchingTop(std::pair<double, double> currentPosition);
-	bool touchingBottom(std::pair<double, double> currentPosition);
+	bool touchingLeft();
+	bool touchingRight();
+	bool touchingTop();
+	bool touchingBottom();
 };
 
