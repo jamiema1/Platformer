@@ -5,7 +5,7 @@
 #include "Map.h"
 
 const int windowwidth = 1365;
-const int windowheight = 768 - 23 - 2;
+const int windowheight = 768 - 23;
 
 bool enter{};
 
@@ -23,13 +23,15 @@ int main()
     double yVel = 0.6;
     p = new Player(100, 100, 0, 0, xVel, yVel, new Rectangle(0,0,0,0,0,127,0,0), m);
 
-    m->addShape(new Rectangle(100, 0, 0, 500, 100, 0, 0, 127));
-    m->addShape(new Rectangle(200, 100, 0,400, 100, 0, 0, 127));
-    m->addShape(new Rectangle(300, 200, 0, 300, 100, 0, 0, 127));
-    m->addShape(new Rectangle(400, 300, 0, 200, 100, 0, 0, 127));
-    m->addShape(new Rectangle(500, 400, 0, 100, 100, 0, 0, 127));
-    m->addShape(new Rectangle(600, 500, 0, 100, 100, 0, 0, 127));
-    m->addShape(new Rectangle(700, 600, 0, 100, 100, 0, 0, 127));
+    int thickness = 25;
+    m->addShape(new Rectangle(0, 0, 0, windowwidth, thickness, 0, 0, 127));
+    m->addShape(new Rectangle(0, 0, 0, thickness, windowheight, 0, 0, 127));
+    m->addShape(new Rectangle(windowwidth - thickness, 0, 0, thickness, windowheight, 0, 0, 127));
+    m->addShape(new Rectangle(0, windowheight - thickness, 0, windowwidth, thickness, 0, 0, 127));
+    m->addShape(new Rectangle(400, 100, 0, 100, 100, 0, 0, 127));
+    m->addShape(new Rectangle(500, 250, 0, 100, 100, 0, 0, 127));
+    m->addShape(new Rectangle(600, 400, 0, 100, 100, 0, 0, 127));
+    m->addShape(new Rectangle(700, 550, 0, 100, 100, 0, 0, 127));
     GLFWwindow* window;
 
  
@@ -72,10 +74,10 @@ int main()
         }
 		*/
 
+        m->draw();
         p->updatePlayer();
         p->drawPlayer();
 
-        m->draw();
         
         /*int y{ 10};
         for (int i = 1; i < 12; i++) {
@@ -139,7 +141,7 @@ void cursorEnterCallback(GLFWwindow* window, int entered) {
 void cursorPositonCallback(GLFWwindow* window, double xPos, double yPos) {
     static_cast<int>(xPos);
     static_cast<int>(yPos);
-    //std::cout << xPos << ":" << yPos << "\n";
+    std::cout << xPos << ":" << yPos << "\n";
 }
 
 void mouseButtonCallback(GLFWwindow* window, int button, int action, int mods) {

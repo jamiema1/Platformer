@@ -54,7 +54,15 @@ void Player::updatePlayer() {
 	std::pair<double, double> currentPosition = { xPosition, yPosition };
 
 	// checks if the player is touching a boundary
-	if (touchingLeft(currentPosition)) {
+	if (touchingTop(currentPosition)) {
+		xPosition += xVelocity;
+		stopVertical();
+	}
+	else if (touchingBottom(currentPosition)) {
+		xPosition += xVelocity;
+		stopVertical();
+	}
+	else if (touchingLeft(currentPosition)) {
 		yPosition += yVelocity;
 		yVelocity += gravity;
 		stopHorizontal();
@@ -64,14 +72,6 @@ void Player::updatePlayer() {
 		yVelocity += gravity;
 		stopHorizontal();
 	}
-	else if(touchingTop(currentPosition)) {
-		xPosition += xVelocity;
-		stopVertical();
-	}
-	else if (touchingBottom(currentPosition)) {
-		xPosition += xVelocity;
-		stopVertical();
-	}
 	else {
 		xPosition += xVelocity;
 		yPosition += yVelocity;
@@ -79,14 +79,14 @@ void Player::updatePlayer() {
 	}
 
 	// checks if the player is touching the outer boundaries
-	if (xPosition > windowwidth - width) {
-		xPosition = windowwidth - width;
+	if (xPosition > windowwidth - width - 1) {
+		xPosition = windowwidth - width - 1;
 	}
 	if (xPosition < 0) {
 		xPosition = 0;
 	}
-	if (yPosition > windowheight - 1) {
-		yPosition = windowheight - 1;
+	if (yPosition > windowheight - height - 1) {
+		yPosition = windowheight - height - 1;
 		stopVertical();
 	}
 	if (yPosition < 0) {
@@ -119,7 +119,7 @@ bool Player::touchingBottom(std::pair<double, double> currentPosition) {
 
 void Player::updateShape() {
 	delete shape;
-	shape = new Rectangle(xPosition, yPosition, 0, width, height, 127, 0, 0);
+	shape = new Rectangle(xPosition + 1, yPosition, 0, width, height, 0, 127, 0);
 }
 
 

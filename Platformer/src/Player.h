@@ -18,7 +18,7 @@ private:
 	const double height = 50;
 	const double gravity = -0.001;
 	const int windowwidth = 1365;
-	const int windowheight = 768 - 23 - 2;
+	const int windowheight = 768 - 23;
 
 public:
 	Player(double xPosition, double yPosition, double xVelocity, double yVelocity, double xBaseSpeed,

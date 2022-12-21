@@ -113,5 +113,39 @@ namespace PlatformerTests
 			}
 		}
 
+		TEST_METHOD(insideBarrierTest)
+		{
+			Assert::IsTrue(map2->insideBarrier(0, 0));
+			Assert::IsFalse(map2->insideBarrier(1, 0));
+			Assert::IsFalse(map2->insideBarrier(0, 1));
+
+			map2->addShape(shape3);
+
+
+			Assert::IsTrue(map2->insideBarrier(2, 4));
+			Assert::IsFalse(map2->insideBarrier(1, 4));
+			Assert::IsTrue(map2->insideBarrier(3, 4));
+			Assert::IsFalse(map2->insideBarrier(2, 3));
+			Assert::IsTrue(map2->insideBarrier(2, 5));
+
+			Assert::IsTrue(map2->insideBarrier(2, 6));
+			Assert::IsFalse(map2->insideBarrier(1, 6));
+			Assert::IsTrue(map2->insideBarrier(3, 6));
+			Assert::IsTrue(map2->insideBarrier(2, 5));
+			Assert::IsFalse(map2->insideBarrier(2, 7));
+
+			Assert::IsTrue(map2->insideBarrier(7, 4));
+			Assert::IsTrue(map2->insideBarrier(6, 4));
+			Assert::IsFalse(map2->insideBarrier(8, 4));
+			Assert::IsFalse(map2->insideBarrier(7, 3));
+			Assert::IsTrue(map2->insideBarrier(7, 5));
+
+			Assert::IsTrue(map2->insideBarrier(7, 6));
+			Assert::IsTrue(map2->insideBarrier(6, 6));
+			Assert::IsFalse(map2->insideBarrier(8, 6));
+			Assert::IsTrue(map2->insideBarrier(7, 5));
+			Assert::IsFalse(map2->insideBarrier(7, 7));
+		}
+
 	};
 }
